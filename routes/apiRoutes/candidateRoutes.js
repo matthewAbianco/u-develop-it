@@ -48,6 +48,7 @@ router.get('/candidate/:id', (req, res) => {
 
 // Create a candidate
 router.post('/candidate', ({ body }, res) => {
+  // Candidate is allowed to have no party affiliation
   const errors = inputCheck(body, 'first_name', 'last_name', 'industry_connected');
   if (errors) {
     res.status(400).json({ error: errors });
@@ -106,7 +107,6 @@ router.delete('/candidate/:id', (req, res) => {
       res.status(400).json({ error: res.message });
       return;
     }
-
     res.json({ message: 'deleted', changes: this.changes });
   });
 });

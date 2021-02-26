@@ -12,7 +12,6 @@ router.get('/voters', (req, res) => {
       res.status(500).json({ error: err.message });
       return;
     }
-
     res.json({
       message: 'success',
       data: rows
@@ -20,7 +19,7 @@ router.get('/voters', (req, res) => {
   });
 });
 
-// Get single voter
+// Get single voter(show)
 router.get('/voter/:id', (req, res) => {
   const sql = `SELECT * FROM voters WHERE id = ?`;
   const params = [req.params.id];
@@ -38,7 +37,7 @@ router.get('/voter/:id', (req, res) => {
 });
 
 // Create a voter
-router.post('/voter', ({body}, res) => {
+router.post('/voter', ({ body }, res) => {
   // Data validation 
   const errors = inputCheck(body, 'first_name', 'last_name', 'email');
   if (errors) {
@@ -83,7 +82,7 @@ router.put('/voter/:id', (req, res) => {
     res.json({
       message: 'success',
       data: req.body,
-      changes: this.changes
+      id: this.lastID
     });
   });
 });
@@ -91,7 +90,8 @@ router.put('/voter/:id', (req, res) => {
 // Delete a voter
 router.delete('/voter/:id', (req, res) => {
   const sql = `DELETE FROM voters WHERE id = ?`;
-  db.run(sql, req.params.id, function(err, result) {
+  const params = [req.params.id];
+  db.run(sql, params.id, function(err, result) {
     if (err) {
       res.status(400).json({ error: res.message });
       return;
